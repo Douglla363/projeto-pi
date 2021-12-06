@@ -1,0 +1,49 @@
+/* General */
+* { font-family: "Roboto"; margin:0; padding: 0; }
+html { height: 100%; }
+body { display: flex; flex-direction: column; min-height: 100%; }
+header {  background-color: #222; }
+main { margin-top: 50px; }
+.container { padding: 0; }
+
+.btn-outline-primary {border: 2px solid #9bbd46; color: #9bbd46; }
+.btn-outline-primary:hover { background-color: #9bbd46; border: 2px solid #9bbd46; }
+
+/* navbar */
+#navbar img { width: 150px}
+#navbar { justify-content: space-between; padding: 5px 50px; min-height: 100px; }
+#navbar .nav-item { margin-top:10px; }
+#navbar a { font-size: 15px; color:#9bbd46; padding:10px; }
+#navbar a:hover { background-color:#9bbd46; color:#111; }
+
+
+/* Create page (Paginas de cadastro)*/
+#create-container { padding: 30px; }
+#create-container label { font-weight: bold; }
+#create-container input, #create-container select, #create-container textarea { font-size: 14px; }
+
+
+/* Dashboard */
+.dashboard-title-container { margin-bottom: 30px; margin-top: 30px; }
+.dashboard-container-deliveryman th { width: 28%; }
+.dashboard-container-packages th { width: 17%; }
+.dashboard-container-deliveryman form, .dashboard-container-packages form { display: inline-block; margin: 1px;}
+
+
+/* footer */
+footer img { width: 150px; margin-bottom: 20px;}
+footer { background-color: #222; color:#999; padding: 40px; margin-top: auto; }
+footer p { margin-bottom: 0; }
+
+
+/* messages */
+.msg {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    width: 100%;
+    margin-bottom: 0;
+    text-align: center;
+    padding: 10px;
+}
+
