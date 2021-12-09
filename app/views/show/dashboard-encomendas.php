@@ -1,41 +1,28 @@
 <?php
-include_once('app/database/connection.php');
+include_once('app/functions/insert.php');
+include_once('app/functions/delete.php');
+include_once('app/functions/update.php');
 
 
-// Cadastro
+// Insert
 if (isset($_POST['rastreador']) && isset($_POST['cep'])) {
     echo "<h5 class='msg'>Encomenda cadastrada com sucesso!</h5>";
 
     $rastreador = $_POST['rastreador'];
     $cep = $_POST['cep'];
+    $bairro = insertCep($cep);
+    $entregador_id = insertId($bairro);
 
-    $link = "https://viacep.com.br/ws/$cep/json/";
-    $ch = curl_init($link);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-
-    $resposta = json_decode(curl_exec($ch), true);
-    curl_close($ch);
-
-    $bairro = $resposta['bairro'];
-    $stmt = $conn->prepare("INSERT INTO encomenda(rastreador,cep,bairro) VALUES (:RASTREADOR, :CEP, :BAIRRO)");
-    $stmt->bindParam(':RASTREADOR', $rastreador);
-    $stmt->bindParam(':CEP', $cep);
-    $stmt->bindParam(':BAIRRO', $bairro);
-    $stmt->execute();
+    insertEncomenda($rastreador, $cep, $bairro, $entregador_id);
 }
-
 
 // Delete
 if (isset($_POST['id'])) {
     echo "<h5 class='msg'>Encomenda excluída com sucesso!</h5>";
 
-    $stmt = $conn->prepare("DELETE FROM encomenda WHERE id_encomenda = :ID_ENCOMENDA");
-
     $id_encomenda = $_POST["id"] ?? "";
 
-    $stmt->bindParam(":ID_ENCOMENDA", $id_encomenda);
-    $stmt->execute();
+    deletEncomenda($id_encomenda);
 }
 
 
@@ -43,27 +30,13 @@ if (isset($_POST['id'])) {
 if (isset($_POST['id_encomenda']) && isset($_POST['edit-rastreador']) && isset($_POST['edit-cep'])) {
     echo "<h5 class='msg'>Encomenda Editada com sucesso!</h5>";
 
-    $stmt = $conn->prepare("UPDATE encomenda SET rastreador = :RASTREADOR, cep = :CEP, bairro = :BAIRRO WHERE id_encomenda = :ID_ENCOMENDA");
-
     $id_encomenda = $_POST['id_encomenda'] ?? "";
     $rastreador = $_POST['edit-rastreador'] ?? "";
     $cep = $_POST['edit-cep'] ?? "";
+    $bairro = updatetCep($cep);
+    $entregador_id = updateId($bairro);
 
-    $link = "https://viacep.com.br/ws/$cep/json/";
-    $ch = curl_init($link);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-
-    $resposta = json_decode(curl_exec($ch), true);
-    curl_close($ch);
-
-    $bairro = $resposta['bairro'];
-
-    $stmt->bindParam(":ID_ENCOMENDA", $id_encomenda);
-    $stmt->bindParam(":RASTREADOR", $rastreador);
-    $stmt->bindParam(":CEP", $cep);
-    $stmt->bindParam(":BAIRRO", $bairro);
-    $stmt->execute();
+    updateEncomenda($id_encomenda, $rastreador, $cep, $bairro, $entregador_id);
 }
 ?>
 
@@ -77,7 +50,7 @@ if (isset($_POST['id_encomenda']) && isset($_POST['edit-rastreador']) && isset($
 
         <?php
         include_once('app/database/connection.php');
-        $selection = $conn->PREPARE("SELECT encomenda.id_encomenda as id_encomenda, encomenda.rastreador as rastreador,encomenda.cep as cep, encomenda.bairro as bairro, entregador.nome as entregador FROM encomenda LEFT JOIN entregador on encomenda.entregador_id = entregador_id;");
+        $selection = $conn->PREPARE("SELECT encomenda.id_encomenda as id_encomenda, encomenda.rastreador as rastreador,encomenda.cep as cep, encomenda.bairro as bairro, entregador.nome as entregador FROM encomenda LEFT JOIN entregador on encomenda.entregador_id = id_entregador;");
         $selection->execute();
         $encomendas = $selection->fetchAll();
 
@@ -124,47 +97,3 @@ if (isset($_POST['id_encomenda']) && isset($_POST['edit-rastreador']) && isset($
         ?>
     </div>
 </main>
-
-
-
-
-
-<!--
-class Delete
-{
-
-function destroy($id)
-{
-include_once('app/database/connection.php');
-
-$id_encomenda = $id["id"];
-
-$stmt = $conn->prepare("DELETE FROM entregador WHERE id_encomenda = :ID_ENCOMENDA");
-$stmt->bindParam(":ID_ENCOMENDA", $id_encomenda);
-$stmt->execute();
-}
-}
-if ($_SERVER['REQUEST_METHOD'] == 'POST') { // aqui é onde vai decorrer a chamada se houver um *request* POST
-$product = new Delete;
-$product->destroy($_POST);
-}
-
-
-function destroy($id)
-{
-include_once('app/database/connection.php');
-
-$stmt = $conn->prepare("DELETE FROM entregador WHERE id_encomenda = :ID_ENCOMENDA");
-$stmt->bindParam(":ID_ENCOMENDA", $id);
-$stmt->execute();
-}
-
-$operacao = $_GET['op'] ?? "n";
-
-if ($operacao == "del") {
-$id = $_GET['id'] ?? "";
-
-$stmt = $conn->prepare("DELETE FROM entregador WHERE id_encomenda = :ID");
-$stmt->bindParam(":ID", $id);
-$stmt->execute();
-} -->

@@ -1,5 +1,7 @@
 <?php
-include_once('app/database/connection.php');
+include_once('app/functions/insert.php');
+include_once('app/functions/delete.php');
+include_once('app/functions/update.php');
 
 // Cadastro
 if (isset($_POST['nome']) && isset($_POST['cpf']) && isset($_POST['bairro'])) {
@@ -9,11 +11,7 @@ if (isset($_POST['nome']) && isset($_POST['cpf']) && isset($_POST['bairro'])) {
     $cpf = $_POST['cpf'];
     $bairro = $_POST['bairro'];
 
-    $stmt = $conn->prepare("INSERT INTO entregador (nome,bairro,cpf) VALUES (:N, :B, :C)");
-    $stmt->bindParam(':N', $nome);
-    $stmt->bindParam(':C', $cpf);
-    $stmt->bindParam(':B', $bairro);
-    $stmt->execute();
+    insertEntregador($nome, $cpf, $bairro);
 }
 
 
@@ -21,12 +19,9 @@ if (isset($_POST['nome']) && isset($_POST['cpf']) && isset($_POST['bairro'])) {
 if (isset($_POST['id'])) {
     echo "<h5 class='msg'>Entregador(a) excluído(a) com sucesso!</h5>";
 
-    $stmt = $conn->prepare("DELETE FROM entregador WHERE id_entregador = :ID_ENTREGADOR");
-
     $id_entregador = $_POST["id"] ?? "";
 
-    $stmt->bindParam(":ID_ENTREGADOR", $id_entregador);
-    $stmt->execute();
+    deletEntregador($id_entregador);
 }
 
 
@@ -34,18 +29,12 @@ if (isset($_POST['id'])) {
 if (isset($_POST['id_entregador']) && isset($_POST['edit-nome']) && isset($_POST['edit-cpf']) && isset($_POST['edit-bairro'])) {
     echo "<h5 class='msg'>Entregador(a) editado(a) com sucesso!</h5>";
 
-    $stmt = $conn->prepare("UPDATE entregador SET nome = :NOME, cpf = :CPF, bairro = :BAIRRO WHERE id_entregador = :ID_ENTREGADOR");
-
     $id_entregador = $_POST['id_entregador'] ?? "";
     $nome = $_POST['edit-nome'] ?? "";
     $cpf = $_POST['edit-cpf'] ?? "";
     $bairro = $_POST['edit-bairro'] ?? "";
 
-    $stmt->bindParam(":ID_ENTREGADOR", $id_entregador);
-    $stmt->bindParam(":NOME", $nome);
-    $stmt->bindParam(":CPF", $cpf);
-    $stmt->bindParam(":BAIRRO", $bairro);
-    $stmt->execute();
+    updateEntregador($id_entregador, $nome, $cpf, $bairro);
 }
 ?>
 

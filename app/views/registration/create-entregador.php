@@ -28,7 +28,7 @@
                     </optgroup>
                     <optgroup label="B">
                         <option value="Bela Vista">Bela Vista</option>
-                        <option value="Aluízio Souto Pinto">Boa Vista</option>
+                        <option value="Boa Vista">Boa Vista</option>
                         <option value="Brasília">Brasília</option>
                     </optgroup>
                     <optgroup label="C">

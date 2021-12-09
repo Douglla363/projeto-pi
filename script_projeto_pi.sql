@@ -1,3 +1,6 @@
+create database projeto_pi;
+
+
 create table entregador(
 id_entregador int(11) primary key auto_increment,
 nome varchar(120) not null,
