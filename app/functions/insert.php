@@ -3,7 +3,7 @@ function insertEntregador($nome, $cpf, $bairro)
 {
     $conn = new PDO("mysql:dbname=projeto_pi;host=localhost", "root", "");
 
-    $stmt = $conn->prepare("INSERT INTO entregador (nome,bairro,cpf) VALUES (:NOME, :CEP, :BAIRRO)");
+    $stmt = $conn->prepare("INSERT INTO entregador (nome, cpf, bairro) VALUES (:NOME, :CEP, :BAIRRO)");
     $stmt->bindParam(':NOME', $nome);
     $stmt->bindParam(':CEP', $cpf);
     $stmt->bindParam(':BAIRRO', $bairro);

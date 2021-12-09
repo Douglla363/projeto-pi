@@ -1,9 +1,10 @@
 <footer>
     <div class="container">
         <div class="row">
+            <!--
             <div class="col-md-2"><a href="?i=home">
                     <img src="public/img/logo.svg"></a>
-            </div>
+            </div>-->
 
 
             <!--<div class="col-md-1 nav-item"><a href="" class="nav-link">Cadastrar</a></div>-->
@@ -11,7 +12,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <p>&copy; 2021 betabase | Todos os direitos reservados. Construido por <a href="#">Douglas</a>.</p>
+                <p class="text-center">&copy; 2021 betabase | Todos os direitos reservados. Construido por <a href="#">Douglas</a>.</p>
             </div>
         </div>
     </div>

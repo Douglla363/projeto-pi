@@ -1,58 +1,85 @@
+<?php
+include_once('app/database/connection.php');
+include_once('app/functions/delete.php');
+
+if (isset($_POST['id'])) {
+    echo "<h5 class='msg'>Encomenda excluída com sucesso!</h5>";
+
+    $id_encomenda = $_POST["id"] ?? "";
+
+    deletEncomenda($id_encomenda);
+}
+
+?>
 <main class="container">
     <div id="search-container" class="col-md-112">
         <h1>Busque uma encomenda</h1>
         <form action="" method="GET">
-            <input type="text" id="search" name="search" class="form-control" placeholder="Rastreador da encomenda...">
+            <input type="text" value="<?php if (isset($_GET['search'])) echo $_GET['search']; ?>" id=" search" name="search" class="form-control" placeholder="Rastreador da encomenda...">
         </form>
     </div>
 
-    <div id="events-container" class="container col-md-12">
+    <div class="col-md-10 offset-md-1 dashboard-container-packages">
+
         <?php
-        /*
-        if (isset($_GET['search'])) {
-            header("Location: ?i=home");
-            exit;
-        }
-
-        $rastreador = "%" . trim($_GET['search']) . "%";
-
-        include_once('app/database/connection.php');
-        $search = $conn->PREPARE("SELECT * FROM ecomenda WHERE restreador LIKE :restreador");
-        $search->bindParam(':restreador', $rastreador, PDO::PARAM_STR);
-        $search->execute();
-
-        $resultados = $search->fetchAll(PDO::FETCH_ASSOC);
-
-        print_r($resultados);
-        exit;
-
-        
-        if ($search) {
-            echo "<h2>Buscando por: " . $search['restreador'] . "</h2>";
-        } else {
-            echo "<h2>Encomendas</h2>";
-            echo "<p class='subtitle'>Veja todas as encomendas</p>";
-        }
-        echo "<div id='cards-container' class='row'>";
-        foreach ($encomendas as $encomenda) {
-            echo "<div class='card col-md-3'>
-                <div class='card-body'>
-                    <p class='card-restreador'>" . $encomenda['rastreador'] . "</p>
-                    <p class='card-cep'>" . $encomenda['cep'] . "</p>
-                    <p class='card-bairro'>" . $encomenda['bairro'] . "</p>
-                    <p class='card-entregador'>" . $encomenda['entregador'] . "</p>
-                </div>
-            </div>";
-        }
-        if (count($encomendas) == 0 && $search) {
-            echo "<p>Não foi possível encontrar nenhuma ecomenda com rastreador:" . $search['restreador'] . "! <a href='?i=dashboard/encomendas'> Ver todas!</a></p>";
-        } elseif (count($encomendas) == 0) {
-            echo "<p>Não há eventos disponíveis</p>";
-        }
-        echo "</div>
-        </div>";
-        */
+        if (!isset($_GET['search'])) {
         ?>
+
+            <tr>
+                <td colspan="3">Digite algo para buscar...</td>
+            </tr>
+
+            <?php
+        } else {
+            $search = $_GET['search'];
+            $selection = $conn->prepare("SELECT enc.id_encomenda as id_encomenda, 
+            enc.rastreador as rastreador,enc.cep as cep, enc.bairro as bairro, ent.nome as entregador
+            FROM encomenda enc, entregador ent WHERE enc.entregador_id = id_entregador AND rastreador LIKE '%$search%';");
+
+            $selection->execute();
+            $encomendas = $selection->fetchAll();
+
+            if (count($encomendas) == 0 || !$search) {
+            ?>
+
+                <p>Nenhum resultado encontrado...</p>
+
+                <?php
+            } else {
+                foreach ($encomendas as $i => $encomenda) {
+                ?>
+
+
+                    <table class='table'>
+                        <thead>
+                            <tr>
+                                <th scope='col'>#</th>
+                                <th scope='col'>Rastreador</th>
+                                <th scope='col'>CEP</th>
+                                <th scope='col'>Bairro</th>
+                                <th scope='col'>Entregador</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td scope='row'><?php echo $i + 1; ?></td>
+                                <td><?php echo $encomenda['rastreador']; ?></td>
+                                <td><?php echo $encomenda['cep']; ?></td>
+                                <td><?php echo $encomenda['bairro']; ?></td>
+                                <td><?php echo $encomenda['entregador']; ?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+            <?php
+                }
+            }
+            ?>
+        <?php
+        }
+        ?>
+
     </div>
 
 </main>

@@ -17,16 +17,17 @@ main { margin-top: 50px; }
 #navbar a { font-size: 15px; color:#9bbd46; padding:10px; }
 #navbar a:hover { background-color:#9bbd46; color:#111; }
 
+
 /* search container */
 #search-container { height: 200px; padding: 15px; text-align: center; }
-#search-container h1 { color: #fff; margin-bottom: 30px; font-weight: 900; }
+#search-container h1 { color: #9bbd46; margin-bottom: 30px; font-weight: 900; }
 #search-container form { width: 70%; margin: 0 auto; }
 
 
 /* Create page (Paginas de cadastro)*/
 #create-container { padding: 30px; }
 #create-container label { font-weight: bold; }
-#create-container input, #create-container select, #create-container textarea { font-size: 14px; }
+#create-container input, #create-container select { font-size: 14px; }
 
 
 /* Dashboard */
